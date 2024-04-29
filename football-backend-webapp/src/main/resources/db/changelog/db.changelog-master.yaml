@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - property:
+      name: table.prefix
+      value: "@table.prefix@"
+  - includeAll:
+      path: /db/changelog/changes

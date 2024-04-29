@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'spring_boot-backend-image'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/football_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=mypassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xdebug
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    restart: no
+
+  db:
+    image: postgres
+    container_name: db
+    #    volumes:
+    #  - C:\docker\pgdev:/var/lib/postgresql/data
+    #  - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=football_db
+    ports:
+      - "5432:5432"

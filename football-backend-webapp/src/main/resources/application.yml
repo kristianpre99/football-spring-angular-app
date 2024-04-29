@@ -1,0 +1,32 @@
+base.transfermarkt.rest.api.url: "https://transfermarkt-api.fly.dev"
+
+server:
+  port: 8080
+tables:
+  prefix: @table.prefix@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/football_db?createDatabaseIfNotExist=true
+    username: postgres
+    password: mypassword
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy:
+          it.kristianp.footballbackendwebapp.hibernate.CustomPhysicalNamingStrategy
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+  liquibase:
+    change-log: 'classpath:/db/changelog/db.changelog-master.yaml'
+#    clear-checksums: true
+
+#security.jwt.token.secret-key: CBFD067F498A7E78B04E4874EC3088307E867F06369BB046DFFDB8CD5F2CF28F
