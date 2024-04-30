@@ -1,4 +1,4 @@
-package it.kristianp.footballbackendwebapp.controller;
+package it.kristianp.footballbackendwebapp.batch.controller;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;

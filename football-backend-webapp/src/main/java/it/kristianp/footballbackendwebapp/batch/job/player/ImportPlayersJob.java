@@ -88,7 +88,6 @@ public class ImportPlayersJob {
     public ItemProcessor<Club, PlayerResponse> processor(RestTemplate restTemplate) {
         return item -> {
             String url = basePropertyRestApiUrl + String.format("clubs/%s/players", item.getId());
-            log.info(url);
             PlayerResponse playerResponse = BatchUtils.getItem(url, PlayerResponse.class, restTemplate);
             if (playerResponse == null) {
                 return null;
