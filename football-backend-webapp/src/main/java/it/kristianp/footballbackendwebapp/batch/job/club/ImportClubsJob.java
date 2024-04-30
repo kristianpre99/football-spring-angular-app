@@ -5,6 +5,7 @@ import it.kristianp.footballbackendwebapp.batch.job.util.BatchUtils;
 import it.kristianp.footballbackendwebapp.model.Club;
 import it.kristianp.footballbackendwebapp.model.Competition;
 import it.kristianp.footballbackendwebapp.model.Participation;
+import it.kristianp.footballbackendwebapp.properties.BatchProperties;
 import it.kristianp.footballbackendwebapp.repository.ClubRepository;
 import it.kristianp.footballbackendwebapp.repository.ParticipationRepository;
 import jakarta.persistence.EntityManagerFactory;
@@ -18,6 +19,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaCursorItemReader;
 import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,6 +57,7 @@ public class ImportClubsJob {
     private final RestTemplate restTemplate;
     private final ParticipationRepository participationRepository;
     private final ClubRepository clubRepository;
+    private final BatchProperties batchProperties;
 
     @Value("${base.transfermarkt.rest.api.url}")
     private String basePropertyRestApiUrl;
@@ -86,18 +89,22 @@ public class ImportClubsJob {
 
     @Bean(name = READER)
     protected ItemReader<Competition> competitionItemReader(EntityManagerFactory entityManagerFactory) throws Exception {
-        return new JpaCursorItemReaderBuilder<Competition>()
+        JpaCursorItemReader<Competition> jpaCursorItemReader = new JpaCursorItemReaderBuilder<Competition>()
                 .name(READER)
                 .entityManagerFactory(entityManagerFactory)
                 .queryString(QUERY_COMPETITIONS)
                 .build();
+
+        if (batchProperties.isLimited()) {
+            jpaCursorItemReader.setMaxItemCount(3);
+        }
+        return jpaCursorItemReader;
     }
 
     @Bean(name = PROCESSOR)
     public ItemProcessor<Competition, ClubResponse> competitionClubResponseItemProcessor() {
         return item -> {
             String url = basePropertyRestApiUrl + String.format("competitions/%s/clubs", item.getId());
-            log.info(url);
             ClubResponse clubResponse = BatchUtils.getItem(url, ClubResponse.class, restTemplate);
             if (clubResponse == null) {
                 return null;
@@ -146,12 +153,7 @@ public class ImportClubsJob {
     public ItemProcessor<Club, Club> clubItemProcessor() {
         return item -> {
             String url = basePropertyRestApiUrl + String.format("clubs/%s/profile", item.getId());
-            log.info(url);
-            Club clubResponse = BatchUtils.getItem(url, Club.class, restTemplate);
-            if (clubResponse == null) {
-                return null;
-            }
-            return clubResponse;
+            return BatchUtils.getItem(url, Club.class, restTemplate);
         };
     }
 

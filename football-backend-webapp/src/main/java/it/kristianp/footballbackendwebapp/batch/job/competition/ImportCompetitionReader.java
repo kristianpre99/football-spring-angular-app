@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.NoSuchElementException;
 
 @Slf4j
+@Deprecated
 public class ImportCompetitionReader implements ItemStreamReader<CompetitionResponse> {
 
     private final RestTemplate restTemplate;
@@ -21,7 +22,6 @@ public class ImportCompetitionReader implements ItemStreamReader<CompetitionResp
         this.restTemplate = restTemplate;
         this.competitionsUrl = basePropertyRestApiUrl + "/competitions/search/UEFA?page_number=1";
     }
-
 
     @Override
     public CompetitionResponse read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {

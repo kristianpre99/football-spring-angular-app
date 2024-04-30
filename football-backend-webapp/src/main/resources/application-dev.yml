@@ -1,0 +1,6 @@
+spring:
+  batch:
+    job:
+      reader:
+        query:
+          limit: true

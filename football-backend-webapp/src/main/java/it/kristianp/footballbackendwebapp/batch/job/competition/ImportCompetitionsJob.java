@@ -1,5 +1,6 @@
 package it.kristianp.footballbackendwebapp.batch.job.competition;
 
+import it.kristianp.footballbackendwebapp.properties.BatchProperties;
 import it.kristianp.footballbackendwebapp.repository.CompetitionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,8 +52,8 @@ public class ImportCompetitionsJob {
 
     @StepScope
     @Bean(name = GET_AND_SAVE_COMPETITIONS_TASK)
-    public Tasklet getAndSaveCompetitionsTask(CompetitionRepository competitionRepository, RestTemplate restTemplate) {
-        return new ImportCompetitionTasklet(competitionRepository, basePropertyRestApiUrl, restTemplate);
+    public Tasklet getAndSaveCompetitionsTask(CompetitionRepository competitionRepository, RestTemplate restTemplate, BatchProperties batchProperties) {
+        return new ImportCompetitionTasklet(competitionRepository, basePropertyRestApiUrl, restTemplate, batchProperties);
     }
 
 //    private static final String GET_AND_PERSIST = "getAndPersist";

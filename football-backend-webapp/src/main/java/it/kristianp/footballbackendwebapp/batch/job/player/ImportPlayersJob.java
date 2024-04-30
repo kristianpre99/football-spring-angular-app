@@ -3,6 +3,7 @@ package it.kristianp.footballbackendwebapp.batch.job.player;
 import it.kristianp.footballbackendwebapp.batch.job.player.domain.PlayerResponse;
 import it.kristianp.footballbackendwebapp.batch.job.util.BatchUtils;
 import it.kristianp.footballbackendwebapp.model.Club;
+import it.kristianp.footballbackendwebapp.properties.BatchProperties;
 import it.kristianp.footballbackendwebapp.repository.PlayerRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaCursorItemReader;
 import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +42,7 @@ public class ImportPlayersJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final PlayerRepository playerRepository;
-
+    private final BatchProperties batchProperties;
 
     @Value("${base.transfermarkt.rest.api.url}")
     private String basePropertyRestApiUrl;
@@ -70,11 +72,16 @@ public class ImportPlayersJob {
 
     @Bean(name = GET_PLAYERS_READER)
     protected ItemReader<Club> reader(EntityManagerFactory entityManagerFactory) throws Exception {
-        return new JpaCursorItemReaderBuilder<Club>()
+        JpaCursorItemReader<Club> jpaCursorItemReader = new JpaCursorItemReaderBuilder<Club>()
                 .name(GET_PLAYERS_READER)
                 .entityManagerFactory(entityManagerFactory)
                 .queryString(QUERY_PLAYERS)
                 .build();
+
+        if (batchProperties.isLimited()) {
+            jpaCursorItemReader.setMaxItemCount(3);
+        }
+        return jpaCursorItemReader;
     }
 
     @Bean(name = GET_PLAYERS_PROCESSOR)

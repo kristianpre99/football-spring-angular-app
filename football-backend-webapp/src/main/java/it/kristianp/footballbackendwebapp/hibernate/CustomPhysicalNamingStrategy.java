@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomPhysicalNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 
-    @Value("${tables.prefix}")
+    @Value("${tables.prefix:FB_}")
     public String tableNamePrefix;
 
     @Override
