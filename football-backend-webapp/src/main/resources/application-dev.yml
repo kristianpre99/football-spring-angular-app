@@ -1,6 +1,2 @@
-spring:
-  batch:
-    job:
-      reader:
-        query:
-          limit: true
+football-app:
+  batch.readerQueryLimit: true

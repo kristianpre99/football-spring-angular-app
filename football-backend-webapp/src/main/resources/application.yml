@@ -1,8 +1,6 @@
-base:
-  transfermarkt:
-    rest:
-      api:
-        url: "https://transfermarkt-api.fly.dev/"
+football-app:
+  transfermarkt-baseRestApiUrl: https://transfermarkt-api.fly.dev/
+  batch-readerQueryLimit: false
 
 server:
   port: 8080
@@ -11,7 +9,7 @@ tables:
 
 spring:
   profiles:
-    active: ${spring.profiles.active}
+    active: @spring.profiles.active@
   datasource:
     url: jdbc:postgresql://localhost:5433/football_db?createDatabaseIfNotExist=true
     username: postgres
