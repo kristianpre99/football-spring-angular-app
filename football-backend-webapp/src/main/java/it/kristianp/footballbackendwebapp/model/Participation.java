@@ -1,19 +1,18 @@
 package it.kristianp.footballbackendwebapp.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
-//@Builder
 @DynamicUpdate
 @DynamicInsert
 @FieldNameConstants
