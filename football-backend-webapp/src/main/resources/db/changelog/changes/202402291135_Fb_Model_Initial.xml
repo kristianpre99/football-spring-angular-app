@@ -160,6 +160,7 @@
             <column name="SIGNED_FROM" type="VARCHAR(255)"/>
             <column name="CONTRACT" type="VARCHAR(255)"/>
             <column name="MARKET_VALUE" type="VARCHAR(255)"/>
+            <column name="CLUB_ID" type="BIGINT"/>
         </createTable>
 
         <createTable tableName="${table.prefix}PLAYER_NATIONALITY">
@@ -167,12 +168,19 @@
             <column name="NATIONALITY" type="VARCHAR(255)"/>
         </createTable>
 
+        <addForeignKeyConstraint baseTableName="${table.prefix}PLAYER"
+                                 constraintName="FK_PLAYER_CLUB"
+                                 referencedTableName="${table.prefix}CLUB"
+                                 baseColumnNames="CLUB_ID"
+                                 referencedColumnNames="ID"/>
+
         <addForeignKeyConstraint baseTableName="${table.prefix}PLAYER_NATIONALITY"
                                  constraintName="FK_PLAYER_NATIONALITY"
                                  referencedTableName="${table.prefix}PLAYER"
                                  baseColumnNames="PLAYER_ID"
                                  referencedColumnNames="ID"/>
         <rollback>
+            <dropAllForeignKeyConstraints baseTableName="${table.prefix}FK_PLAYER_CLUB"/>
             <dropAllForeignKeyConstraints baseTableName="${table.prefix}PLAYER_NATIONALITY"/>
             <dropTable tableName="${table.prefix}PLAYER_NATIONALITY" cascadeConstraints="true"/>
             <dropTable tableName="${table.prefix}PLAYER" cascadeConstraints="true"/>

@@ -16,7 +16,7 @@ public class BatchUtils {
     public <T> T getItem(String url, Class<T> responseType, RestTemplate restTemplate) {
         try {
             String normalizeUrl = normalizeUrl(url);
-            log.info("Request api {}", normalizeUrl);
+            log.info("Request api: {}", normalizeUrl);
             ResponseEntity<T> response = restTemplate.getForEntity(normalizeUrl, responseType);
             if (response.getBody() == null) {
                 log.info(responseType.getSimpleName() + " body is null, skip");
@@ -24,7 +24,7 @@ public class BatchUtils {
             }
             return response.getBody();
         } catch (RestClientException e) {
-            log.error("Error calling API {} ", e.getMessage());
+            log.error("Error calling API: {} ", e.getMessage());
             return null;
         }
     }

@@ -1,2 +1,2 @@
 football-app:
-  batch.readerQueryLimit: true
+  batch-readerQueryLimit: true

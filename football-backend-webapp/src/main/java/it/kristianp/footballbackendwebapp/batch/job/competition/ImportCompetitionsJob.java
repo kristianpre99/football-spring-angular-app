@@ -1,6 +1,6 @@
 package it.kristianp.footballbackendwebapp.batch.job.competition;
 
-import it.kristianp.footballbackendwebapp.properties.BatchProperties;
+import it.kristianp.footballbackendwebapp.properties.FootballAppConfigProperties;
 import it.kristianp.footballbackendwebapp.repository.CompetitionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -32,10 +31,6 @@ public class ImportCompetitionsJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
 
-    @Value("${base.transfermarkt.rest.api.url}")
-    private String basePropertyRestApiUrl;
-
-
     @Bean(name = NAME)
     public Job job(@Qualifier(GET_AND_SAVE_COMPETITIONS_STEP) Step getAndPersist) {
         return new JobBuilder(NAME, jobRepository)
@@ -52,7 +47,7 @@ public class ImportCompetitionsJob {
 
     @StepScope
     @Bean(name = GET_AND_SAVE_COMPETITIONS_TASK)
-    public Tasklet getAndSaveCompetitionsTask(CompetitionRepository competitionRepository, RestTemplate restTemplate, BatchProperties batchProperties) {
-        return new ImportCompetitionTasklet(competitionRepository, basePropertyRestApiUrl, restTemplate, batchProperties);
+    public Tasklet getAndSaveCompetitionsTask(CompetitionRepository competitionRepository, RestTemplate restTemplate, FootballAppConfigProperties footballAppConfigProperties) {
+        return new ImportCompetitionTasklet(competitionRepository, restTemplate, footballAppConfigProperties);
     }
 }

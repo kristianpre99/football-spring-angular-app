@@ -5,7 +5,7 @@ import it.kristianp.footballbackendwebapp.batch.job.util.BatchUtils;
 import it.kristianp.footballbackendwebapp.model.Club;
 import it.kristianp.footballbackendwebapp.model.Competition;
 import it.kristianp.footballbackendwebapp.model.Participation;
-import it.kristianp.footballbackendwebapp.properties.BatchProperties;
+import it.kristianp.footballbackendwebapp.properties.FootballAppConfigProperties;
 import it.kristianp.footballbackendwebapp.repository.ClubRepository;
 import it.kristianp.footballbackendwebapp.repository.ParticipationRepository;
 import jakarta.persistence.EntityManagerFactory;
@@ -57,10 +57,8 @@ public class ImportClubsJob {
     private final RestTemplate restTemplate;
     private final ParticipationRepository participationRepository;
     private final ClubRepository clubRepository;
-    private final BatchProperties batchProperties;
+    private final FootballAppConfigProperties footballAppConfigProperties;
 
-    @Value("${base.transfermarkt.rest.api.url}")
-    private String basePropertyRestApiUrl;
     @Value("${importClubsJob.chunk.size:5}")
     private Integer chunkSize;
 
@@ -95,8 +93,8 @@ public class ImportClubsJob {
                 .queryString(QUERY_COMPETITIONS)
                 .build();
 
-        if (batchProperties.isLimited()) {
-            jpaCursorItemReader.setMaxItemCount(3);
+        if (footballAppConfigProperties.isBatchReaderQueryLimit()) {
+            jpaCursorItemReader.setMaxItemCount(2);
         }
         return jpaCursorItemReader;
     }
@@ -104,7 +102,7 @@ public class ImportClubsJob {
     @Bean(name = PROCESSOR)
     public ItemProcessor<Competition, ClubResponse> competitionClubResponseItemProcessor() {
         return item -> {
-            String url = basePropertyRestApiUrl + String.format("competitions/%s/clubs", item.getId());
+            String url = footballAppConfigProperties.getTransfermarktBaseRestApiUrl() + String.format("competitions/%s/clubs", item.getId());
             ClubResponse clubResponse = BatchUtils.getItem(url, ClubResponse.class, restTemplate);
             if (clubResponse == null) {
                 return null;
@@ -152,7 +150,7 @@ public class ImportClubsJob {
     @Bean(name = ENRICH_STEP_PROCESSOR)
     public ItemProcessor<Club, Club> clubItemProcessor() {
         return item -> {
-            String url = basePropertyRestApiUrl + String.format("clubs/%s/profile", item.getId());
+            String url = footballAppConfigProperties.getTransfermarktBaseRestApiUrl() + String.format("clubs/%s/profile", item.getId());
             return BatchUtils.getItem(url, Club.class, restTemplate);
         };
     }
@@ -160,9 +158,7 @@ public class ImportClubsJob {
 
     @Bean(name = ENRICH_STEP_WRITER)
     public ItemWriter<Club> clubItemWriter() {
-        return items -> items.forEach(f -> {
-            clubRepository.save(f);
-        });
+        return items -> items.forEach(clubRepository::save);
     }
 
     private String getSeason() {

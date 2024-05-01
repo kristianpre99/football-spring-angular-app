@@ -3,7 +3,7 @@ package it.kristianp.footballbackendwebapp.batch.job.player;
 import it.kristianp.footballbackendwebapp.batch.job.player.domain.PlayerResponse;
 import it.kristianp.footballbackendwebapp.batch.job.util.BatchUtils;
 import it.kristianp.footballbackendwebapp.model.Club;
-import it.kristianp.footballbackendwebapp.properties.BatchProperties;
+import it.kristianp.footballbackendwebapp.properties.FootballAppConfigProperties;
 import it.kristianp.footballbackendwebapp.repository.PlayerRepository;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +42,8 @@ public class ImportPlayersJob {
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     private final PlayerRepository playerRepository;
-    private final BatchProperties batchProperties;
+    private final FootballAppConfigProperties footballAppConfigProperties;
 
-    @Value("${base.transfermarkt.rest.api.url}")
-    private String basePropertyRestApiUrl;
     @Value("${importPlayersJob.chunk.size:10}")
     private Integer chunkSize;
 
@@ -78,7 +76,7 @@ public class ImportPlayersJob {
                 .queryString(QUERY_PLAYERS)
                 .build();
 
-        if (batchProperties.isLimited()) {
+        if (footballAppConfigProperties.isBatchReaderQueryLimit()) {
             jpaCursorItemReader.setMaxItemCount(3);
         }
         return jpaCursorItemReader;
@@ -87,7 +85,7 @@ public class ImportPlayersJob {
     @Bean(name = GET_PLAYERS_PROCESSOR)
     public ItemProcessor<Club, PlayerResponse> processor(RestTemplate restTemplate) {
         return item -> {
-            String url = basePropertyRestApiUrl + String.format("clubs/%s/players", item.getId());
+            String url = footballAppConfigProperties.getTransfermarktBaseRestApiUrl() + String.format("clubs/%s/players", item.getId());
             PlayerResponse playerResponse = BatchUtils.getItem(url, PlayerResponse.class, restTemplate);
             if (playerResponse == null) {
                 return null;
