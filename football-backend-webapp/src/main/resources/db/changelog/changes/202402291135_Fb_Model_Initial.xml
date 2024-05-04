@@ -6,8 +6,10 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="20240229113501" author="kristianp">
+        <createSequence cycle="false" incrementBy="1" sequenceName="APP_USER_SEQ" startValue="1"/>
+
         <createTable tableName="${table.prefix}APP_USER">
-            <column name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT" defaultValueSequenceNext="APP_USER_SEQ">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="FIRST_NAME" type="VARCHAR(255)">
@@ -16,7 +18,7 @@
             <column name="LAST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="LOGIN" type="VARCHAR(255)">
+            <column name="EMAIL" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="PASSWORD" type="VARCHAR(255)">
@@ -27,6 +29,7 @@
             </column>
         </createTable>
         <rollback>
+            <dropSequence sequenceName="APP_USER_SEQ"/>
             <dropTable tableName="${table.prefix}APP_USER" cascadeConstraints="true"/>
         </rollback>
     </changeSet>

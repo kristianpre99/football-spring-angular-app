@@ -1,11 +1,12 @@
 football-app:
   transfermarkt-baseRestApiUrl: https://transfermarkt-api.fly.dev/
   batch-readerQueryLimit: false
+  hibernate-tablePrefix: @table.prefix@
 
 server:
   port: 8080
-tables:
-  prefix: @table.prefix@
+#tables:
+#  prefix: @table.prefix@
 
 spring:
   profiles:
