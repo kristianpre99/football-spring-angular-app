@@ -2,6 +2,7 @@ football-app:
   transfermarkt-baseRestApiUrl: https://transfermarkt-api.fly.dev/
   batch-readerQueryLimit: false
   hibernate-tablePrefix: @table.prefix@
+  authentication-minutesDuration: 30
 
 server:
   port: 8080

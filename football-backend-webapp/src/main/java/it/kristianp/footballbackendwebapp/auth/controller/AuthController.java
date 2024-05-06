@@ -23,7 +23,6 @@ public class AuthController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-//        return ResponseEntity.created(authService.register(request), HttpStatus.CREATED);
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
     }
 

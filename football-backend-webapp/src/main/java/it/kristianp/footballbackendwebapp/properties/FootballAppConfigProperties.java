@@ -18,5 +18,7 @@ public class FootballAppConfigProperties {
     private boolean batchReaderQueryLimit;
     // default value = "FB_"
     private String hibernateTablePrefix = "FB_";
+    // default value = 30
+    private int authenticationMinutesDuration = 30;
 
 }
