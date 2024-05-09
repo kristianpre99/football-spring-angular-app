@@ -1,6 +1,7 @@
+# custom properties
 football-app:
   transfermarkt-baseRestApiUrl: https://transfermarkt-api.fly.dev/
-  batch-readerQueryLimit: false
+  batch-readerQueryLimit: true
   hibernate-tablePrefix: @table.prefix@
   authentication-minutesDuration: 30
 
@@ -13,7 +14,7 @@ spring:
   profiles:
     active: @spring.profiles.active@
   datasource:
-    url: jdbc:postgresql://localhost:5433/football_db?createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5433/football_db
     username: postgres
     password: mypassword
     driverClassName: org.postgresql.Driver

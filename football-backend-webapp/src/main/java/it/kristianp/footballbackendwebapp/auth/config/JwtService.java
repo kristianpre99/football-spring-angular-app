@@ -21,6 +21,7 @@ import java.util.function.Function;
 public class JwtService {
 
     private final static String SECRET_KEY = "2a4c4b635e486d364b62367e475344673527435d2566303f6b773c4d40";
+    private static final SecretKey S_KEY = Jwts.SIG.HS256.key().build();
 
     private final FootballAppConfigProperties footballAppConfigProperties;
 
@@ -49,14 +50,8 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .issuedAt(issuedDate)
                 .expiration(expDate)
-//                .signWith(getSignIngKey(), SignatureAlgorithm.HS256)
-                .signWith(getSignIngKey())
+                .signWith(S_KEY)
                 .compact();
-    }
-
-    private SecretKey getSignIngKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -74,9 +69,14 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSignIngKey())
+                .verifyWith(S_KEY)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    private SecretKey getSignIngKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }
