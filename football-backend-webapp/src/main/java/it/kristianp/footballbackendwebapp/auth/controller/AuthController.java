@@ -4,6 +4,7 @@ import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationRequest;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationResponse;
 import it.kristianp.footballbackendwebapp.auth.payload.RegisterRequest;
 import it.kristianp.footballbackendwebapp.auth.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
+            @RequestBody @Valid RegisterRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
+            @RequestBody @Valid AuthenticationRequest request
     ) {
         return ResponseEntity.ok(authService.authenticate(request));
     }

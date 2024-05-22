@@ -1,10 +1,10 @@
 package it.kristianp.footballbackendwebapp.auth.service.impl;
 
 import it.kristianp.footballbackendwebapp.auth.config.JwtService;
+import it.kristianp.footballbackendwebapp.auth.model.User;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationRequest;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationResponse;
 import it.kristianp.footballbackendwebapp.auth.payload.RegisterRequest;
-import it.kristianp.footballbackendwebapp.auth.model.User;
 import it.kristianp.footballbackendwebapp.auth.repository.UserRepository;
 import it.kristianp.footballbackendwebapp.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +24,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
+    @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .firstName(request.getFirstName())

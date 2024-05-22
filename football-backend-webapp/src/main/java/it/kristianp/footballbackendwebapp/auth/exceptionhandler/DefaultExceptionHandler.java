@@ -1,26 +1,44 @@
 package it.kristianp.footballbackendwebapp.auth.exceptionhandler;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({AuthenticationException.class})
     @ResponseBody
-    public ResponseEntity<Map<String, String>> handleAuthenticationException(Exception ex) {
-
-        String re = "Authentication failed at controller advice";
-        Map<String, String> map = new HashMap<>();
-        map.put("error", re);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    public ProblemDetail handleAuthenticationException(AuthenticationException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
+
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, getErrors(ex));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    private static String getErrors(BindException ex) {
+        return Optional.of(ex.getBindingResult())
+                .map(bindingResult -> bindingResult.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList()))
+                .orElseGet(Collections::emptyList)
+                .toString();
+    }
+
 }
