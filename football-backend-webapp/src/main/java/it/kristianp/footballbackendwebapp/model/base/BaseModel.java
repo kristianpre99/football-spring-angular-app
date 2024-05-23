@@ -1,34 +1,23 @@
 package it.kristianp.footballbackendwebapp.model.base;
 
+import it.kristianp.footballbackendwebapp.model.base.auditable.AuditableModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseModel implements Serializable {
+public class BaseModel extends AuditableModel {
 
     @Id
     @Column(name = "id")
     private Long id;
-
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @Override
     public final boolean equals(Object o) {

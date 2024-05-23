@@ -1,16 +1,15 @@
 package it.kristianp.footballbackendwebapp.model;
 
+import it.kristianp.footballbackendwebapp.model.base.auditable.AuditableModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 @Getter
@@ -21,7 +20,7 @@ import java.util.Objects;
 @FieldNameConstants
 @Entity
 @Table(name = Participation.TABLE_NAME)
-public class Participation {
+public class Participation extends AuditableModel {
     public static final String TABLE_NAME = "PARTICIPATION";
 
     @EmbeddedId
@@ -41,11 +40,6 @@ public class Participation {
 
     @Column(name = "season")
     private String season;
-
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_date")
-    private Date modifyDate;
 
     @Embeddable
     @Data

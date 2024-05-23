@@ -71,6 +71,12 @@
             <column name="CONTINENT" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_AT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="${table.prefix}COMPETITION" cascadeConstraints="true"/>
@@ -97,6 +103,12 @@
             <column name="AVERAGE_AGE" type="VARCHAR(255)"/>
             <column name="FOREIGNERS" type="VARCHAR(255)"/>
             <column name="NATIONAL_TEAM_PLAYERS" type="VARCHAR(255)"/>
+            <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_AT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="${table.prefix}CLUB_COLORS">
@@ -128,7 +140,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="SEASON" type="VARCHAR(255)"/>
-            <column name="UPDATED_DATE" type="TIMESTAMP"/>
+            <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_AT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createIndex unique="true" tableName="${table.prefix}PARTICIPATION"
@@ -175,6 +192,12 @@
             <column name="CONTRACT" type="VARCHAR(255)"/>
             <column name="MARKET_VALUE" type="VARCHAR(255)"/>
             <column name="CLUB_ID" type="BIGINT"/>
+            <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED_AT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="${table.prefix}PLAYER_NATIONALITY">

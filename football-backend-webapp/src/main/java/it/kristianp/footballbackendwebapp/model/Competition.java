@@ -1,5 +1,6 @@
 package it.kristianp.footballbackendwebapp.model;
 
+import it.kristianp.footballbackendwebapp.model.base.auditable.AuditableModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,7 +13,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -22,7 +22,7 @@ import java.util.Objects;
 @DynamicInsert
 @ToString
 @Table(name = Competition.TABLE_NAME)
-public class Competition implements Serializable {
+public class Competition extends AuditableModel {
 
     public static final String TABLE_NAME = "COMPETITION";
 
