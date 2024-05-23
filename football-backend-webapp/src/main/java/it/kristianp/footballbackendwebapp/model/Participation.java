@@ -7,12 +7,15 @@ import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @DynamicUpdate
 @DynamicInsert
 @FieldNameConstants
@@ -26,13 +29,13 @@ public class Participation {
 
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
-    @MapsId(Id.Fields.clubId)
+    @MapsId(Id.Fields.CLUB_ID)
     @JoinColumn(name = Id.Columns.CLUB_ID, nullable = false)
     private Club club;
 
     @NotNull
     @ManyToOne
-    @MapsId(Id.Fields.competitionId)
+    @MapsId(Id.Fields.COMPETITION_ID)
     @JoinColumn(name = Id.Columns.COMP_ID, nullable = false)
     private Competition competition;
 
@@ -43,10 +46,6 @@ public class Participation {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_date")
     private Date modifyDate;
-
-    public Participation() {
-
-    }
 
     @Embeddable
     @Data
@@ -73,4 +72,19 @@ public class Participation {
         }
     }
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        Participation that = (Participation) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hash(id);
+    }
 }

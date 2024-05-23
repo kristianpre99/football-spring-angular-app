@@ -1,6 +1,7 @@
 package it.kristianp.footballbackendwebapp.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import it.kristianp.footballbackendwebapp.model.base.BaseModel;
 import it.kristianp.footballbackendwebapp.model.deserializer.CustomLocalDateDeserializer;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,13 +21,9 @@ import java.util.Set;
 @FieldNameConstants
 @Entity
 @Table(name = Player.TABLE_NAME)
-public class Player implements Serializable {
+public class Player extends BaseModel {
 
     public static final String TABLE_NAME = "PLAYER";
-
-    @Id
-    @Column(name = "id")
-    private Long id;
 
     @Column(name = "name")
     private String name;

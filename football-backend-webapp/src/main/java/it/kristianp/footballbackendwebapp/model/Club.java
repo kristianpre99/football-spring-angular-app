@@ -1,30 +1,28 @@
 package it.kristianp.footballbackendwebapp.model;
 
+import it.kristianp.footballbackendwebapp.model.base.BaseModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.io.Serializable;
 import java.util.Set;
 
 @Getter
 @Setter
-@Entity
+@FieldNameConstants
+@ToString
 @DynamicUpdate
 @DynamicInsert
-@ToString
+@Entity
 @Table(name = Club.TABLE_NAME)
-public class Club implements Serializable {
+public class Club extends BaseModel {
 
     public static final String TABLE_NAME = "CLUB";
-
-    @Id
-    @Column(name = "id")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -47,6 +45,8 @@ public class Club implements Serializable {
     @Column(name = "founded_on")
     private String foundedOn;
 
+    @ToString.Exclude
+    @Basic(fetch = FetchType.LAZY)
     @ElementCollection
     @CollectionTable(name = "club_colors", joinColumns = @JoinColumn(name = "club_id"))
     @Column(name = "color")
@@ -67,6 +67,7 @@ public class Club implements Serializable {
     @Embedded
     private Squad squad;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "club")
     private Set<Player> players;
 
