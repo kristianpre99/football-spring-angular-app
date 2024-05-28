@@ -105,10 +105,8 @@ public class User implements UserDetails {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy
-                ?
-                ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
-                :
-                getClass().hashCode();
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+                : getClass().hashCode();
     }
 
     public enum Role implements GrantedAuthority {

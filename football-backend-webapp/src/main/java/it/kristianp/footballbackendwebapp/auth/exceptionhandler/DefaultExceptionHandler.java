@@ -1,13 +1,9 @@
 package it.kristianp.footballbackendwebapp.auth.exceptionhandler;
 
 import org.springframework.http.*;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -15,14 +11,15 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@Deprecated
+//@RestControllerAdvice
 public class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({AuthenticationException.class})
-    @ResponseBody
-    public ProblemDetail handleAuthenticationException(AuthenticationException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
-    }
+//    @ExceptionHandler({AuthenticationException.class})
+//    @ResponseBody
+//    public ProblemDetail handleAuthenticationException(AuthenticationException ex) {
+//        return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+//    }
 
 
     @Override

@@ -15,7 +15,7 @@
 
         <createTable tableName="${table.prefix}APP_USER">
             <column name="ID" type="BIGINT" defaultValueSequenceNext="APP_USER_SEQ">
-                <constraints primaryKeyName="${table.prefix}APP_USER_PK"  primaryKey="true" nullable="false"/>
+                <constraints primaryKeyName="${table.prefix}APP_USER_PK" primaryKey="true" nullable="false"/>
             </column>
             <column name="FIRST_NAME" type="VARCHAR(255)">
                 <constraints nullable="false"/>
@@ -35,7 +35,7 @@
             <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="UPDATED_AT" type="VARCHAR(255)">
+            <column name="UPDATED_AT" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -74,9 +74,7 @@
             <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="UPDATED_AT" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
         </createTable>
         <rollback>
             <dropTable tableName="${table.prefix}COMPETITION" cascadeConstraints="true"/>
@@ -106,9 +104,7 @@
             <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="UPDATED_AT" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
         </createTable>
 
         <createTable tableName="${table.prefix}CLUB_COLORS">
@@ -143,9 +139,7 @@
             <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="UPDATED_AT" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
         </createTable>
 
         <createIndex unique="true" tableName="${table.prefix}PARTICIPATION"
@@ -195,9 +189,7 @@
             <column name="CREATED_AT" type="TIMESTAMP" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="UPDATED_AT" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="UPDATED_AT" type="TIMESTAMP"/>
         </createTable>
 
         <createTable tableName="${table.prefix}PLAYER_NATIONALITY">

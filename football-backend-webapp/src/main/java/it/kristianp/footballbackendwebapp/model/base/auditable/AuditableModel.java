@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@MappedSuperclass
 public class AuditableModel implements Serializable {
 
     @CreationTimestamp
@@ -19,6 +20,6 @@ public class AuditableModel implements Serializable {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", insertable = false)
     private LocalDateTime updatedAt;
 }
