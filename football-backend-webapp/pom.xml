@@ -10,7 +10,7 @@
     </parent>
     <groupId>it.kristianp</groupId>
     <artifactId>football-backend-webapp</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>football-backend-webapp</name>
     <description>Demo project for Spring Boot</description>
     <properties>
