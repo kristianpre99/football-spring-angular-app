@@ -1,5 +1,6 @@
 package it.kristianp.footballbackendwebapp.auth.controller;
 
+import it.kristianp.footballbackendwebapp.auth.AuthEndpointConstants;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationRequest;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationResponse;
 import it.kristianp.footballbackendwebapp.auth.payload.RegisterRequest;
@@ -15,22 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping(AuthEndpointConstants.BASE_ENDPOINT)
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody @Valid RegisterRequest request
-    ) {
+    @PostMapping(AuthEndpointConstants.REGISTRATION)
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody @Valid RegisterRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody @Valid AuthenticationRequest request
-    ) {
+    @PostMapping(AuthEndpointConstants.AUTHENTICATE)
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 }

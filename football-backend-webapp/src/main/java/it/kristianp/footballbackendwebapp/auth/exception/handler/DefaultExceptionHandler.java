@@ -1,4 +1,4 @@
-package it.kristianp.footballbackendwebapp.auth.exceptionhandler;
+package it.kristianp.footballbackendwebapp.auth.exception.handler;
 
 import org.springframework.http.*;
 import org.springframework.validation.BindException;

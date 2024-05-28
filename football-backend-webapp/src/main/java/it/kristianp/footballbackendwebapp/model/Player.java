@@ -6,6 +6,7 @@ import it.kristianp.footballbackendwebapp.model.deserializer.CustomLocalDateDese
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 @DynamicUpdate
 @DynamicInsert
 @FieldNameConstants
@@ -38,6 +40,7 @@ public class Player extends BaseModel {
     @Column(name = "age")
     private Integer age;
 
+    @ToString.Exclude
     @ElementCollection
     @CollectionTable(name = "player_nationality", joinColumns = @JoinColumn(name = "player_id"))
     @Column(name = "nationality")

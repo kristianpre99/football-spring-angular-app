@@ -1,6 +1,7 @@
 package it.kristianp.footballbackendwebapp.auth.service.impl;
 
 import it.kristianp.footballbackendwebapp.auth.config.JwtService;
+import it.kristianp.footballbackendwebapp.auth.exception.UserAlreadyExistsException;
 import it.kristianp.footballbackendwebapp.auth.model.User;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationRequest;
 import it.kristianp.footballbackendwebapp.auth.payload.AuthenticationResponse;
@@ -26,6 +27,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserAlreadyExistsException("User already exists");
+        }
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())

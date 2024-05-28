@@ -1,8 +1,8 @@
-package it.kristianp.footballbackendwebapp.auth.exceptionhandler;
+package it.kristianp.footballbackendwebapp.auth.exception.handler;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import it.kristianp.footballbackendwebapp.auth.exception.UserAlreadyExistsException;
 import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
@@ -26,6 +26,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String description = "Internal server error.";
 
+        if (exception instanceof UserAlreadyExistsException) {
+            status = HttpStatus.BAD_REQUEST;
+            description = exception.getMessage();
+        }
         if (exception instanceof BadCredentialsException) {
             status = HttpStatus.UNAUTHORIZED;
             description = "The username or password is incorrect";
@@ -46,16 +50,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             status = HttpStatus.FORBIDDEN;
             description = "The JWT token has expired";
         }
-        if (exception instanceof MalformedJwtException) {
-            status = HttpStatus.FORBIDDEN;
-            description = "The JWT is malformed";
-        }
-        if (exception instanceof MalformedJwtException) {
-            status = HttpStatus.FORBIDDEN;
-            description = "The JWT is malformed";
-        }
 
-        ProblemDetail errorDetail = ProblemDetail.forStatusAndDetail(status, exception.getMessage());
+        ProblemDetail errorDetail = ProblemDetail.forStatus(status);
         errorDetail.setProperty("description", description);
 
         return errorDetail;

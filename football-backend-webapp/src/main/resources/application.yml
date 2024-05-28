@@ -7,8 +7,6 @@ football-app:
 
 server:
   port: 8080
-#tables:
-#  prefix: @table.prefix@
 
 spring:
   profiles:
@@ -35,5 +33,10 @@ spring:
   liquibase:
     change-log: 'classpath:/db/changelog/db.changelog-master.yaml'
 #    clear-checksums: true
+
+info:
+  app:
+    name: @project.name@
+    version: @project.version@
 
 #security.jwt.token.secret-key: CBFD067F498A7E78B04E4874EC3088307E867F06369BB046DFFDB8CD5F2CF28F

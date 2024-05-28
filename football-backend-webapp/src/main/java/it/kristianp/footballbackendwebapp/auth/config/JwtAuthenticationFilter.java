@@ -1,11 +1,13 @@
 package it.kristianp.footballbackendwebapp.auth.config;
 
+import it.kristianp.footballbackendwebapp.auth.AuthEndpointConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
         if (authHeader == null || !authHeader.startsWith(TOKEN_PREFIX)) {
-            filterChain.doFilter(request, response);
+            if (request.getRequestURI() != null
+                    && AuthEndpointConstants.REGISTRATION_ENDPOINT.equals(request.getRequestURI()) || AuthEndpointConstants.AUTHENTICATE_ENDPOINT.equals(request.getRequestURI())) {
+                filterChain.doFilter(request, response);
+            } else {
+                handlerExceptionResolver.resolveException(request, response, null, new AccessDeniedException("Not authorized"));
+            }
             return;
         }
         try {

@@ -1,5 +1,6 @@
 package it.kristianp.footballbackendwebapp.auth.config;
 
+import it.kristianp.footballbackendwebapp.auth.AuthEndpointConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String[] WHITE_LIST_URL = { "api/v1/auth/**", "/h2-console/**" };
+    private static final String[] WHITE_LIST_URL = {AuthEndpointConstants.REGISTRATION_ENDPOINT, AuthEndpointConstants.AUTHENTICATE_ENDPOINT, "/h2-console/**"};
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
