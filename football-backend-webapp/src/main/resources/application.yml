@@ -39,4 +39,9 @@ info:
     name: @project.name@
     version: @project.version@
 
+# swagger-ui custom path
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
 #security.jwt.token.secret-key: CBFD067F498A7E78B04E4874EC3088307E867F06369BB046DFFDB8CD5F2CF28F

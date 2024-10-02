@@ -8,4 +8,8 @@ public interface AuthEndpointConstants {
     public static final String AUTHENTICATE = "/authenticate";
     public static final String AUTHENTICATE_ENDPOINT = BASE_ENDPOINT + AUTHENTICATE;
 
+    public static final String H2_CONSOLE_PREFIX = "/h2-console/";
+    public static final String SWAGGER_UI_PREFIX = "/swagger-ui/";
+    public static final String SWAGGER_CONFIG_PREFIX = "/v3/api-docs";
+
 }

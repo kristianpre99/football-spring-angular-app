@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.proxy.HibernateProxy;
@@ -21,6 +22,7 @@ import java.util.Objects;
 @DynamicUpdate
 @DynamicInsert
 @ToString
+@FieldNameConstants
 @Table(name = Competition.TABLE_NAME)
 public class Competition extends AuditableModel {
 

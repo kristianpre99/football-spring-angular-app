@@ -38,8 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
         if (authHeader == null || !authHeader.startsWith(TOKEN_PREFIX)) {
-            if (request.getRequestURI() != null
-                    && AuthEndpointConstants.REGISTRATION_ENDPOINT.equals(request.getRequestURI()) || AuthEndpointConstants.AUTHENTICATE_ENDPOINT.equals(request.getRequestURI())) {
+            if (request.getRequestURI() != null &&
+                    AuthEndpointConstants.REGISTRATION_ENDPOINT.equals(request.getRequestURI()) ||
+                    AuthEndpointConstants.AUTHENTICATE_ENDPOINT.equals(request.getRequestURI()) ||
+                    request.getRequestURI().startsWith(AuthEndpointConstants.H2_CONSOLE_PREFIX) ||
+                    request.getRequestURI().startsWith(AuthEndpointConstants.SWAGGER_UI_PREFIX) ||
+                    request.getRequestURI().startsWith(AuthEndpointConstants.SWAGGER_CONFIG_PREFIX)
+            ) {
                 filterChain.doFilter(request, response);
             } else {
                 handlerExceptionResolver.resolveException(request, response, null, new AccessDeniedException("Not authorized"));
