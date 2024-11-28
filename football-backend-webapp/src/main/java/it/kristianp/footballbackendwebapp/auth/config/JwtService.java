@@ -2,8 +2,6 @@ package it.kristianp.footballbackendwebapp.auth.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import it.kristianp.footballbackendwebapp.properties.FootballAppConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-//    private final static String SECRET_KEY = "2a4c4b635e486d364b62367e475344673527435d2566303f6b773c4d40";
+    //    private final static String SECRET_KEY = "2a4c4b635e486d364b62367e475344673527435d2566303f6b773c4d40";
     private static final SecretKey S_KEY = Jwts.SIG.HS256.key().build();
 
     private final FootballAppConfigProperties footballAppConfigProperties;

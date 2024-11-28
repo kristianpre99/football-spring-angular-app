@@ -94,7 +94,7 @@ public class ImportClubsJob {
                 .build();
 
         if (footballAppConfigProperties.isBatchReaderQueryLimit()) {
-            jpaCursorItemReader.setMaxItemCount(2);
+            jpaCursorItemReader.setMaxItemCount(5);
         }
         return jpaCursorItemReader;
     }

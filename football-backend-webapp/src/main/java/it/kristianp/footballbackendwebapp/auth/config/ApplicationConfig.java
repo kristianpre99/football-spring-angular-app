@@ -55,7 +55,7 @@ public class ApplicationConfig {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("http://localhost:4401"));
+        config.setAllowedOrigins(Collections.singletonList("http://localhost:4402"));
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.ORIGIN,
                 HttpHeaders.CONTENT_TYPE,

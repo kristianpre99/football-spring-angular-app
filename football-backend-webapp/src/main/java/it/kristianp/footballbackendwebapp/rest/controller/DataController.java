@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -27,16 +26,20 @@ public class DataController {
 
     @GetMapping(value = "/competitions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Competition>> getCompetitions(@RequestParam(defaultValue = PAGE_NUMBER_DEFAULT_VALUE) Integer pageNo,
-                                                             @RequestParam(defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize) {
+                                                             @RequestParam(defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                             @RequestParam(required = false) String freeText) {
         PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(Competition.Fields.NAME).ascending());
-        // pass it to repos
-        Page<Competition> competitionPage = competitionRepository.findAll(pageRequest);
+        Page<Competition> competitionPage = competitionRepository.searchByFreeText(freeText, pageRequest);
         return ResponseEntity.of(Optional.of(competitionPage));
     }
 
     @GetMapping(value = "/clubs/{competitionId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Club>> getClubsByCompetition(@PathVariable String competitionId) {
-        List<Club> clubNamesByCompetitionId = clubRepository.findClubNamesByCompetitionId(competitionId);
+    public ResponseEntity<Page<Club>> getClubsByCompetition(@PathVariable String competitionId,
+                                                            @RequestParam(defaultValue = PAGE_NUMBER_DEFAULT_VALUE) Integer pageNo,
+                                                            @RequestParam(defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(Competition.Fields.NAME).ascending());
+        Page<Club> clubNamesByCompetitionId = clubRepository.findClubNamesByCompetitionId(competitionId, pageRequest);
+
         return ResponseEntity.of(Optional.of(clubNamesByCompetitionId));
     }
 }

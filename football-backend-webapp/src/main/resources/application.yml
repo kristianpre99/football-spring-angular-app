@@ -12,7 +12,7 @@ spring:
   profiles:
     active: @spring.profiles.active@
   datasource:
-    url: jdbc:postgresql://localhost:5433/football_db
+    url: jdbc:postgresql://localhost:5432/football_db
     username: postgres
     password: mypassword
     driverClassName: org.postgresql.Driver
