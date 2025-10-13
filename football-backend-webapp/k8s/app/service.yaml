@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: football-backend-app-service
+spec:
+  selector:
+    app: football-backend-app # Deve corrispondere al label del tuo Deployment
+  ports:
+    - protocol: TCP
+      port: 8080 #  # La porta interna del Pod
+      targetPort: 8080  # La porta su cui l'app ascolta nel container
+      nodePort: 30080  # Porta esterna per l'accesso al Service
+  type: NodePort

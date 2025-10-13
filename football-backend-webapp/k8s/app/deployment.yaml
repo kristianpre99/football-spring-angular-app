@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: football-backend-app
+spec:
+  replicas: 3  # Numero di repliche per scalare
+  selector:
+    matchLabels:
+      app: football-backend-app
+  template:
+    metadata:
+      labels:
+        app: football-backend-app
+    spec:
+      containers:
+        - name: football-backend-app
+          image: football-backend:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "mypassword"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://db-service:5432/football_db"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "mypassword"
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "none"
+            - name: JAVA_TOOL_OPTIONS
+              value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xdebug"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
